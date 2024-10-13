@@ -19,4 +19,9 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public static function create(array $attributes): self
+    {
+        return new self($attributes);
+    }
 }

@@ -49,4 +49,9 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class, 'approved_post', 'post_id', 'approved_by');
     }
+
+    public static function create(array $attributes): self
+    {
+        return new self($attributes);
+    }
 }

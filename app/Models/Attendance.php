@@ -23,4 +23,9 @@ class Attendance extends Pivot
     {
         return $this->belongsTo(Post::class, 'post_id');
     }
+
+    public static function create(array $attributes): self
+    {
+        return new self($attributes);
+    }
 }

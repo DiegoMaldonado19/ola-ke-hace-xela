@@ -23,4 +23,9 @@ class ApprovedPost extends Pivot
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
+
+    public static function create(array $attributes): self
+    {
+        return new self($attributes);
+    }
 }

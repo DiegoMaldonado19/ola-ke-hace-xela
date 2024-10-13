@@ -80,4 +80,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'approved_post', 'approved_by', 'post_id');
     }
+
+    public static function create(array $attributes): self
+    {
+        return new self($attributes);
+    }
 }

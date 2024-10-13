@@ -17,4 +17,9 @@ class UserRole extends Model
     {
         return $this->hasMany(User::class, 'role_id');
     }
+
+    public static function create(array $attributes): self
+    {
+        return new self($attributes);
+    }
 }
