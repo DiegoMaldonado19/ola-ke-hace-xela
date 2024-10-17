@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable
 {
 
-    protected $table = 'post';
+    protected $table = 'user';
 
     /**
      * The attributes that are mass assignable.
