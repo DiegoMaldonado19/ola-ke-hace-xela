@@ -14,8 +14,18 @@ class AttendanceController extends Controller
      */
     public function index(): JsonResponse
     {
-        $attendances = Attendance::all();
-        return response()->json($attendances, 200);
+        $attendances = Attendance::with(['user', 'post'])->get();
+
+        $formattedAttendances = $attendances->map(function ($attendance) {
+            return [
+                'username' => $attendance->user->username,
+                'post' => $attendance->post->title,
+                'attendance_date_creation' => $attendance->created_at,
+                'post_start_date' => $attendance->post->start_date_time
+            ];
+        });
+
+        return response()->json($formattedAttendances, 200);
     }
 
     /**
