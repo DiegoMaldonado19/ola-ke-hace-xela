@@ -10,12 +10,22 @@ use Illuminate\Http\Request;
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource in a formatted DTO.
      */
     public function index(): JsonResponse
     {
-        $reports = Report::all();
-        return response()->json($reports, 200);
+        $reports = Report::with(['user', 'post'])->get();
+
+        $formattedReports = $reports->map(function ($report) {
+            return [
+                'id' => $report->id,
+                'username' => $report->user->username,
+                'reported_post' => $report->post->title,
+                'comment' => $report->comment,
+            ];
+        });
+
+        return response()->json($formattedReports, 200);
     }
 
     /**
