@@ -19,7 +19,9 @@ class ReportController extends Controller
         $formattedReports = $reports->map(function ($report) {
             return [
                 'id' => $report->id,
+                'user_id' => $report->user->id,
                 'username' => $report->user->username,
+                'reported_post_id' => $report->post->id,
                 'reported_post' => $report->post->title,
                 'comment' => $report->comment,
             ];
@@ -49,10 +51,19 @@ class ReportController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $report = Report::find($id);
+        $report = Report::with(['user', 'post'])->find($id);
 
         if (!empty($report)) {
-            return response()->json($report, 200);
+            $formattedReport = [
+                'id' => $report->id,
+                'user_id' => $report->user->id,
+                'username' => $report->user->username,
+                'reported_post_id' => $report->post->id,
+                'reported_post' => $report->post->title,
+                'comment' => $report->comment,
+            ];
+
+            return response()->json($formattedReport, 200);
         } else {
             return response()->json([
                 "message" => "Reporte no encontrado"

@@ -29,7 +29,8 @@ class User extends Authenticatable
         'cui',
         'name',
         'lastname',
-        'phone'
+        'phone',
+        'automatically_post'
     ];
 
     /**

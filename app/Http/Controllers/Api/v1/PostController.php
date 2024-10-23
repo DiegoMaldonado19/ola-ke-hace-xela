@@ -32,9 +32,6 @@ class PostController extends Controller
             'end_date_time' => 'required|date',
             'capacity_limit' => 'required|integer',
             'category_id' => 'required|integer|exists:post_categories,id',
-            'strike_count' => 'integer',
-            'approved' => 'boolean',
-            'automatically_post' => 'boolean',
         ]);
 
         $post = Post::create($validatedData);
@@ -67,15 +64,14 @@ class PostController extends Controller
             $post = Post::find($id);
             $post->user_id = is_null($request->user_id) ? $post->user_id : $request->user_id;
             $post->title = is_null($request->title) ? $post->title : $request->title;
-            $post->description = is_null($request->description) ? $post->description : $request->description;
             $post->place = is_null($request->place) ? $post->place : $request->place;
+            $post->description = is_null($request->description) ? $post->description : $request->description;
             $post->start_date_time = is_null($request->start_date_time) ? $post->start_date_time : $request->start_date_time;
             $post->end_date_time = is_null($request->end_date_time) ? $post->end_date_time : $request->end_date_time;
             $post->capacity_limit = is_null($request->capacity_limit) ? $post->capacity_limit : $request->capacity_limit;
             $post->category_id = is_null($request->category_id) ? $post->category_id : $request->category_id;
-            $post->strike_count = is_null($request->strike_count) ? $post->strike_count : $request->strike_count;
+            $post->post_strike_count = is_null($request->strike_count) ? $post->strike_count : $request->strike_count;
             $post->approved = is_null($request->approved) ? $post->approved : $request->approved;
-            $post->automatically_post = is_null($request->automatically_post) ? $post->automatically_post : $request->automatically_post;
             $post->save();
 
             return response()->json([

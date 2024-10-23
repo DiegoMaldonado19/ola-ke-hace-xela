@@ -14,8 +14,19 @@ class ApprovedPostController extends Controller
      */
     public function index(): JsonResponse
     {
-        $approvedPosts = ApprovedPost::all();
-        return response()->json($approvedPosts, 200);
+        $approvedPosts = ApprovedPost::with(['post', 'user'])->get();
+
+        $formattedPosts = $approvedPosts->map(function ($approvedPost) {
+            return [
+                'post_id' => $approvedPost->post_id,
+                'title' => $approvedPost->post->title,
+                'approved_by' => $approvedPost->approved_by,
+                'username' => $approvedPost->user->username,
+                'approved_at' => $approvedPost->approved_at,
+            ];
+        });
+
+        return response()->json($formattedPosts, 200);
     }
 
     /**
@@ -38,10 +49,18 @@ class ApprovedPostController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $approvedPost = ApprovedPost::find($id);
+        $approvedPost = ApprovedPost::with(['post', 'user'])
+            ->where('post_id', $id)
+            ->first();
 
-        if (!empty($approvedPost)) {
-            return response()->json($approvedPost, 200);
+        if ($approvedPost) {
+            return response()->json([
+                'post_id' => $approvedPost->post_id,
+                'title' => $approvedPost->post->title,
+                'approved_by' => $approvedPost->approved_by,
+                'username' => $approvedPost->user->username,
+                'approved_at' => $approvedPost->approved_at,
+            ], 200);
         } else {
             return response()->json([
                 "message" => "Publicación aprobada no encontrada"

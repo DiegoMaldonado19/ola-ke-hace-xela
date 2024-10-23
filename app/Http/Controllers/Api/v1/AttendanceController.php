@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,7 +20,9 @@ class AttendanceController extends Controller
 
         $formattedAttendances = $attendances->map(function ($attendance) {
             return [
+                'user_id' => $attendance->user->id,
                 'username' => $attendance->user->username,
+                'post_id' => $attendance->post->id,
                 'post' => $attendance->post->title,
                 'attendance_date_creation' => $attendance->created_at,
                 'post_start_date' => $attendance->post->start_date_time
@@ -46,15 +50,58 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): JsonResponse
+    public function getAttendancesByUsername($username): JsonResponse
     {
-        $attendance = Attendance::find($id);
+        $user = User::where('username', $username)->first();
 
-        if (!empty($attendance)) {
-            return response()->json($attendance, 200);
+        if ($user) {
+            $attendances = Attendance::with(['user', 'post'])
+                ->where('user_id', $user->id)
+                ->get();
+
+            $formattedAttendances = $attendances->map(function ($attendance) {
+                return [
+                    'user_id' => $attendance->user->id,
+                    'username' => $attendance->user->username,
+                    'post_id' => $attendance->post->id,
+                    'post' => $attendance->post->title,
+                    'attendance_date_creation' => $attendance->created_at,
+                    'post_start_date' => $attendance->post->start_date_time
+                ];
+            });
+
+            return response()->json($formattedAttendances, 200);
         } else {
             return response()->json([
-                "message" => "Asistencia no encontrada"
+                "message" => "Usuario no encontrado"
+            ], 404);
+        }
+    }
+
+    public function getAttendancesByPost($postId): JsonResponse
+    {
+        $post = Post::find($postId);
+
+        if ($post) {
+            $attendances = Attendance::with(['user', 'post'])
+                ->where('post_id', $postId)
+                ->get();
+
+            $formattedAttendances = $attendances->map(function ($attendance) {
+                return [
+                    'user_id' => $attendance->user->id,
+                    'username' => $attendance->user->username,
+                    'post_id' => $attendance->post->id,
+                    'post' => $attendance->post->title,
+                    'attendance_date_creation' => $attendance->created_at,
+                    'post_start_date' => $attendance->post->start_date_time
+                ];
+            });
+
+            return response()->json($formattedAttendances, 200);
+        } else {
+            return response()->json([
+                "message" => "Publicación no encontrada"
             ], 404);
         }
     }

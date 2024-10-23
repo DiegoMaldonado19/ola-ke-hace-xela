@@ -70,6 +70,7 @@ class UserController extends Controller
             $user->name = is_null($request->name) ? $user->name : $request->name;
             $user->lastname = is_null($request->lastname) ? $user->lastname : $request->lastname;
             $user->phone = is_null($request->phone) ? $user->phone : $request->phone;
+            $user->automatically_post = is_null($request->automatically_post) ? $user->automatically_post : $request->automatically_post;
             $user->save();
 
             return response()->json([

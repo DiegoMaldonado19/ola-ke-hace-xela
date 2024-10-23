@@ -14,15 +14,14 @@ class Post extends Model
     protected $fillable = [
         'user_id',
         'tittle',
-        'description',
         'place',
+        'description',
         'start_date_time',
         'end_date_time',
         'capacity_limit',
         'category_id',
-        'strike_count',
-        'approved',
-        'automatically_post'
+        'post_strike_count',
+        'approved'
     ];
 
     public function user(): BelongsTo
