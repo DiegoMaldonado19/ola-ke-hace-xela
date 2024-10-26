@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\UserResource;
+use App\Http\Resources\v1\UserRoleCollection;
 use App\Models\UserRole;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ class UserRoleController extends Controller
      */
     public function index(): JsonResponse
     {
-        $user_roles = UserRole::all();
+        $user_roles = new UserRoleCollection((UserRole::all()));
         return response()->json($user_roles, 200);
     }
 
@@ -37,11 +39,13 @@ class UserRoleController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $user = UserRole::find($id);
+        $userRole = UserRole::find($id);
 
-        if(!empty($user)){
+        $formattedUserRole = new UserResource($userRole);
+
+        if(!empty($formattedUserRole)){
             return response()->json([
-                $user
+                $formattedUserRole
             ], 200);
         } else {
             return response()->json([

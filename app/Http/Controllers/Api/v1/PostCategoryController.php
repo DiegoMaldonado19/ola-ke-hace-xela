@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\PostCategoryCollection;
+use App\Http\Resources\v1\PostCategoryResource;
 use App\Models\PostCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ class PostCategoryController extends Controller
      */
     public function index(): JsonResponse
     {
-        $postCategories = PostCategory::all();
+        $postCategories = new PostCategoryCollection((PostCategory::all()));
         return response()->json($postCategories, 200);
     }
 
@@ -39,8 +41,10 @@ class PostCategoryController extends Controller
     {
         $postCategory = PostCategory::find($id);
 
-        if (!empty($postCategory)) {
-            return response()->json($postCategory, 200);
+        $formattedPostCategory = new PostCategoryResource($postCategory);
+
+        if (!empty($formattedPostCategory)) {
+            return response()->json($formattedPostCategory, 200);
         } else {
             return response()->json([
                 "message" => "Categoría no encontrada"

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\NotificationCollection;
+use App\Http\Resources\v1\NotificationResource;
 use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +16,8 @@ class NotificationController extends Controller
      */
     public function index(): JsonResponse
     {
-        $notifications = Notification::all();
+        $notifications = new NotificationCollection((Notification::all()));
+
         return response()->json($notifications, 200);
     }
 
@@ -41,8 +44,10 @@ class NotificationController extends Controller
     {
         $notification = Notification::find($id);
 
-        if (!empty($notification)) {
-            return response()->json($notification, 200);
+        $formattedNotification = new NotificationResource($notification);
+
+        if (!empty($formattedNotification)) {
+            return response()->json($formattedNotification, 200);
         } else {
             return response()->json([
                 "message" => "Notificación no encontrada"

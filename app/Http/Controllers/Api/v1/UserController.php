@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+
+use App\Http\Resources\v1\UserCollection;
 
 class UserController extends Controller
 {
@@ -14,7 +17,8 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = User::all();
+        $users =  new UserCollection((User::all()));
+
         return response()->json($users, 200);
     }
 
@@ -46,8 +50,10 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if (!empty($user)) {
-            return response()->json($user, 200);
+        $formattedUser = new UserResource($user);
+
+        if (!empty($formattedUser)) {
+            return response()->json($formattedUser, 200);
         } else {
             return response()->json([
                 "message" => "Usuario no encontrado"

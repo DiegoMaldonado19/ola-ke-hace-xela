@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\ApprovedPostCollection;
+use App\Http\Resources\v1\ApprovedPostResource;
 use App\Models\ApprovedPost;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,19 +16,9 @@ class ApprovedPostController extends Controller
      */
     public function index(): JsonResponse
     {
-        $approvedPosts = ApprovedPost::with(['post', 'user'])->get();
+        $approvedPosts = new ApprovedPostCollection((ApprovedPost::all()));
 
-        $formattedPosts = $approvedPosts->map(function ($approvedPost) {
-            return [
-                'post_id' => $approvedPost->post_id,
-                'title' => $approvedPost->post->title,
-                'approved_by' => $approvedPost->approved_by,
-                'username' => $approvedPost->user->username,
-                'approved_at' => $approvedPost->approved_at,
-            ];
-        });
-
-        return response()->json($formattedPosts, 200);
+        return response()->json($approvedPosts, 200);
     }
 
     /**
@@ -54,13 +46,10 @@ class ApprovedPostController extends Controller
             ->first();
 
         if ($approvedPost) {
-            return response()->json([
-                'post_id' => $approvedPost->post_id,
-                'title' => $approvedPost->post->title,
-                'approved_by' => $approvedPost->approved_by,
-                'username' => $approvedPost->user->username,
-                'approved_at' => $approvedPost->approved_at,
-            ], 200);
+
+            $formattedApprovedPost = new ApprovedPostResource($approvedPost);
+
+            return response()->json($formattedApprovedPost, 200);
         } else {
             return response()->json([
                 "message" => "Publicación aprobada no encontrada"

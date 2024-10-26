@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\AttendanceCollection;
+use App\Http\Resources\v1\AttendanceResource;
 use App\Models\Attendance;
 use App\Models\Post;
 use App\Models\User;
@@ -16,20 +18,9 @@ class AttendanceController extends Controller
      */
     public function index(): JsonResponse
     {
-        $attendances = Attendance::with(['user', 'post'])->get();
+        $attendances = new AttendanceCollection((Attendance::all()));
 
-        $formattedAttendances = $attendances->map(function ($attendance) {
-            return [
-                'user_id' => $attendance->user->id,
-                'username' => $attendance->user->username,
-                'post_id' => $attendance->post->id,
-                'post' => $attendance->post->title,
-                'attendance_date_creation' => $attendance->created_at,
-                'post_start_date' => $attendance->post->start_date_time
-            ];
-        });
-
-        return response()->json($formattedAttendances, 200);
+        return response()->json($attendances, 200);
     }
 
     /**
@@ -55,22 +46,14 @@ class AttendanceController extends Controller
         $user = User::where('username', $username)->first();
 
         if ($user) {
-            $attendances = Attendance::with(['user', 'post'])
+
+            $attendance = Attendance::with(['user', 'post'])
                 ->where('user_id', $user->id)
                 ->get();
 
-            $formattedAttendances = $attendances->map(function ($attendance) {
-                return [
-                    'user_id' => $attendance->user->id,
-                    'username' => $attendance->user->username,
-                    'post_id' => $attendance->post->id,
-                    'post' => $attendance->post->title,
-                    'attendance_date_creation' => $attendance->created_at,
-                    'post_start_date' => $attendance->post->start_date_time
-                ];
-            });
+            $formattedAttendance = new AttendanceCollection($attendance);
 
-            return response()->json($formattedAttendances, 200);
+            return response()->json($formattedAttendance, 200);
         } else {
             return response()->json([
                 "message" => "Usuario no encontrado"
@@ -83,22 +66,14 @@ class AttendanceController extends Controller
         $post = Post::find($postId);
 
         if ($post) {
-            $attendances = Attendance::with(['user', 'post'])
-                ->where('post_id', $postId)
+
+            $attendance = Attendance::with(['user', 'post'])
+                ->where('post_id', $post->id)
                 ->get();
 
-            $formattedAttendances = $attendances->map(function ($attendance) {
-                return [
-                    'user_id' => $attendance->user->id,
-                    'username' => $attendance->user->username,
-                    'post_id' => $attendance->post->id,
-                    'post' => $attendance->post->title,
-                    'attendance_date_creation' => $attendance->created_at,
-                    'post_start_date' => $attendance->post->start_date_time
-                ];
-            });
+            $formattedAttendance = new AttendanceCollection($attendance);
 
-            return response()->json($formattedAttendances, 200);
+            return response()->json($formattedAttendance, 200);
         } else {
             return response()->json([
                 "message" => "Publicación no encontrada"

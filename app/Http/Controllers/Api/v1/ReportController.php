@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\ReportCollection;
+use App\Http\Resources\v1\ReportResource;
 use App\Models\Report;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,20 +16,9 @@ class ReportController extends Controller
      */
     public function index(): JsonResponse
     {
-        $reports = Report::with(['user', 'post'])->get();
+        $reports = new ReportCollection((Report::all()));
 
-        $formattedReports = $reports->map(function ($report) {
-            return [
-                'id' => $report->id,
-                'user_id' => $report->user->id,
-                'username' => $report->user->username,
-                'reported_post_id' => $report->post->id,
-                'reported_post' => $report->post->title,
-                'comment' => $report->comment,
-            ];
-        });
-
-        return response()->json($formattedReports, 200);
+        return response()->json($reports, 200);
     }
 
     /**
@@ -51,18 +42,11 @@ class ReportController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $report = Report::with(['user', 'post'])->find($id);
+        $report = Report::find($id);
 
-        if (!empty($report)) {
-            $formattedReport = [
-                'id' => $report->id,
-                'user_id' => $report->user->id,
-                'username' => $report->user->username,
-                'reported_post_id' => $report->post->id,
-                'reported_post' => $report->post->title,
-                'comment' => $report->comment,
-            ];
+        $formattedReport = new ReportResource($report);
 
+        if (!empty($formattedReport)) {
             return response()->json($formattedReport, 200);
         } else {
             return response()->json([

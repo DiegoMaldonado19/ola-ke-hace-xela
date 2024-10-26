@@ -50,17 +50,17 @@ Route::put('v1/notification/{id}', [NotificationV1::class, 'update'])->middlewar
 Route::delete('v1/notification/{id}', [NotificationV1::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::get('v1/attendance', [AttendanceV1::class, 'index'])->middleware('auth:sanctum');
-Route::get('v1/attendance/by-username/{user_username}', [AttendanceV1::class, 'getAttendancesByUsername'])->middleware('auth:sanctum');
-Route::get('v1/attendance/by-post/{post_id}', [AttendanceV1::class, 'getAttendancesByPost'])->middleware('auth:sanctum');
+Route::get('v1/attendance/byUsername/{user_username}', [AttendanceV1::class, 'getAttendancesByUsername'])->middleware('auth:sanctum');
+Route::get('v1/attendance/byPost/{post_id}', [AttendanceV1::class, 'getAttendancesByPost'])->middleware('auth:sanctum');
 Route::post('v1/attendance', [AttendanceV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/attendance/{id}', [AttendanceV1::class, 'update'])->middleware('auth:sanctum');
 Route::delete('v1/attendance/{id}', [AttendanceV1::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::get('v1/post-approved', [ApprovedPostV1::class, 'index'])->middleware('auth:sanctum');
-Route::get('v1/post-approved/{id}', [ApprovedPostV1::class, 'show'])->middleware('auth:sanctum');
-Route::post('v1/post-approved', [ApprovedPostV1::class, 'store'])->middleware('auth:sanctum');
-Route::put('v1/post-approved/{id}', [ApprovedPostV1::class, 'update'])->middleware('auth:sanctum');
-Route::delete('v1/post-approved/{id}', [ApprovedPostV1::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('v1/postsApproved', [ApprovedPostV1::class, 'index']);//->middleware('auth:sanctum');
+Route::get('v1/postsApproved/{id}', [ApprovedPostV1::class, 'show']);//->middleware('auth:sanctum');
+Route::post('v1/postsApproved', [ApprovedPostV1::class, 'store'])->middleware('auth:sanctum');
+Route::put('v1/postsApproved/{id}', [ApprovedPostV1::class, 'update'])->middleware('auth:sanctum');
+Route::delete('v1/postsApproved/{id}', [ApprovedPostV1::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::post('login', [
     App\Http\Controllers\Api\LoginController::class,

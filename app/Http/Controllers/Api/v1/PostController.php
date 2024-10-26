@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\PostCollection;
+use App\Http\Resources\v1\PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +16,8 @@ class PostController extends Controller
      */
     public function index(): JsonResponse
     {
-        $posts = Post::all();
+        $posts = new PostCollection((Post::all()));
+
         return response()->json($posts, 200);
     }
 
@@ -46,8 +49,10 @@ class PostController extends Controller
     {
         $post = Post::find($id);
 
-        if (!empty($post)) {
-            return response()->json($post, 200);
+        $formattedPost = new PostResource($post);
+
+        if (!empty($formattedPost)) {
+            return response()->json($formattedPost, 200);
         } else {
             return response()->json([
                 "message" => "Publicación no encontrada"
