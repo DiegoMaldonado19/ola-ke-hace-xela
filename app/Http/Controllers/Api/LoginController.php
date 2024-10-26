@@ -7,15 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\v1\UserResource;
 
 class LoginController extends Controller
 {
     public function login(Request $request){
         $this->validateLogin($request);
 
-        if( Auth::attempt($request->only('email', 'password')) ){
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user(); // Obtener el usuario autenticado
+
             return response()->json([
-                'token' => $request->user()->createToken($request->username)->plainTextToken,
+                'user' => new UserResource($user),
+                'token' => $user->createToken($request->username)->plainTextToken,
                 'message' => 'Success'
             ], 200);
         }
