@@ -21,6 +21,8 @@ Route::delete('v1/user/{id}', [UserV1::class, 'destroy'])->middleware('auth:sanc
 
 Route::get('v1/post', [PostV1::class, 'index'])->middleware('auth:sanctum');
 Route::get('v1/post/{id}', [PostV1::class, 'show'])->middleware('auth:sanctum');
+Route::get('v1/post-approved', [PostV1::class, 'approvedPosts'])->middleware('auth:sanctum');
+Route::get('v1/post-notApproved', [PostV1::class, 'notApprovedPosts'])->middleware('auth:sanctum');
 Route::post('v1/post', [PostV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/post/{id}', [PostV1::class, 'update'])->middleware('auth:sanctum');
 Route::delete('v1/post/{id}', [PostV1::class, 'destroy'])->middleware('auth:sanctum');
@@ -56,8 +58,8 @@ Route::post('v1/attendance', [AttendanceV1::class, 'store'])->middleware('auth:s
 Route::put('v1/attendance/{id}', [AttendanceV1::class, 'update'])->middleware('auth:sanctum');
 Route::delete('v1/attendance/{id}', [AttendanceV1::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::get('v1/postsApproved', [ApprovedPostV1::class, 'index']);//->middleware('auth:sanctum');
-Route::get('v1/postsApproved/{id}', [ApprovedPostV1::class, 'show']);//->middleware('auth:sanctum');
+Route::get('v1/postsApproved', [ApprovedPostV1::class, 'index'])->middleware('auth:sanctum');
+Route::get('v1/postsApproved/{id}', [ApprovedPostV1::class, 'show'])->middleware('auth:sanctum');
 Route::post('v1/postsApproved', [ApprovedPostV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/postsApproved/{id}', [ApprovedPostV1::class, 'update'])->middleware('auth:sanctum');
 Route::delete('v1/postsApproved/{id}', [ApprovedPostV1::class, 'destroy'])->middleware('auth:sanctum');

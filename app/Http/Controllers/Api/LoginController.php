@@ -40,7 +40,7 @@ class LoginController extends Controller
             $user = $personalAccessToken->tokenable;
 
             if ($user) {
-                return response()->json($user, 200);
+                return response()->json(new UserResource($user), 200);
             } else {
                 return response()->json([
                     'message' => 'Usuario no encontrado',

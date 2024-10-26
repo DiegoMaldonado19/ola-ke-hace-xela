@@ -60,6 +60,20 @@ class PostController extends Controller
         }
     }
 
+    public function approvedPosts(): JsonResponse
+    {
+        $approvedPosts = Post::where('approved', true)->get();
+
+        return response()->json(new PostCollection($approvedPosts), 200);
+    }
+
+    public function notApprovedPosts(): JsonResponse
+    {
+        $notApprovedPosts = Post::where('approved', false)->get();
+
+        return response()->json(new PostCollection($notApprovedPosts), 200);
+    }
+
     /**
      * Update the specified resource in storage.
      */
