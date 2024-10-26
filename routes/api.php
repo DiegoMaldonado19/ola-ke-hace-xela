@@ -74,11 +74,6 @@ Route::post('register', [
     'register'
 ]);
 
-Route::post('profile', [
-    App\Http\Controllers\Api\LoginController::class,
-    'profile'
-]);
-
 Route::get('update-passwords', function () {
     $users = User::all();
 
