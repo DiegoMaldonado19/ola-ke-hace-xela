@@ -37,23 +37,4 @@ class LoginController extends Controller
         ]);
     }
 
-    public function profile(Request $request){
-        $personalAccessToken = PersonalAccessToken::findToken($request->token);
-
-        if ($personalAccessToken) {
-            $user = $personalAccessToken->tokenable;
-
-            if ($user) {
-                return response()->json(new UserResource($user), 200);
-            } else {
-                return response()->json([
-                    'message' => 'Usuario no encontrado',
-                ], 404);
-            }
-        } else {
-            return response()->json([
-                'message' => 'Token no válido',
-            ], 401);
-        }
-    }
 }
