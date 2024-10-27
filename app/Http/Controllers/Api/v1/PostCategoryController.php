@@ -31,7 +31,7 @@ class PostCategoryController extends Controller
 
         $postCategory = PostCategory::create($validatedData);
 
-        return response()->json($postCategory, 201);
+        return response()->json(new PostCategoryResource($postCategory), 201);
     }
 
     /**

@@ -31,7 +31,7 @@ class UserRoleController extends Controller
 
         $userRole = UserRole::create($validatedData);
 
-        return response()->json($userRole, 201);
+        return response()->json(new UserResource($userRole), 201);
     }
 
     /**

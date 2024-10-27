@@ -35,7 +35,7 @@ class AttendanceController extends Controller
 
         $attendance = Attendance::create($validatedData);
 
-        return response()->json($attendance, 201);
+        return response()->json(new AttendanceResource($attendance), 201);
     }
 
     /**

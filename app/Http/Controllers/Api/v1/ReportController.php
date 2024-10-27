@@ -34,7 +34,7 @@ class ReportController extends Controller
 
         $report = Report::create($validatedData);
 
-        return response()->json($report, 201);
+        return response()->json(new ReportResource($report), 201);
     }
 
     /**

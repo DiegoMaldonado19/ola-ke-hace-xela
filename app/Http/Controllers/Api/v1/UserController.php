@@ -40,7 +40,7 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        return response()->json($user, 201);
+        return response()->json(new UserResource($user), 201);
     }
 
     /**

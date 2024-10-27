@@ -39,7 +39,7 @@ class PostController extends Controller
 
         $post = Post::create($validatedData);
 
-        return response()->json($post, 201);
+        return response()->json(new PostResource($post), 201);
     }
 
     /**

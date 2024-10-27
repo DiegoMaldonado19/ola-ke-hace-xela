@@ -33,7 +33,7 @@ class ApprovedPostController extends Controller
 
         $approvedPost = ApprovedPost::create($validatedData);
 
-        return response()->json($approvedPost, 201);
+        return response()->json(new ApprovedPostResource($approvedPost), 201);
     }
 
     /**
