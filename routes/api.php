@@ -21,7 +21,7 @@ Route::delete('v1/user/{id}', [UserV1::class, 'destroy'])->middleware('auth:sanc
 
 Route::get('v1/post', [PostV1::class, 'index'])->middleware('auth:sanctum');
 Route::get('v1/post/{id}', [PostV1::class, 'show'])->middleware('auth:sanctum');
-Route::get('v1/post-approved', [PostV1::class, 'approvedPosts'])->middleware('auth:sanctum');
+Route::get('v1/post-approved', [PostV1::class, 'approvedPosts']);
 Route::get('v1/post-notApproved', [PostV1::class, 'notApprovedPosts'])->middleware('auth:sanctum');
 Route::post('v1/post', [PostV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/post/{id}', [PostV1::class, 'update'])->middleware('auth:sanctum');
