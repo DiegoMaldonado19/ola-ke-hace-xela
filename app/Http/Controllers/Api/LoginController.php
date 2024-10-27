@@ -15,11 +15,9 @@ class LoginController extends Controller
         $this->validateLogin($request);
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user(); // Obtener el usuario autenticado
 
             return response()->json([
-                'user' => new UserResource($user),
-                'token' => $user->createToken($request->username)->plainTextToken,
+                'token' => $request->user()->createToken($request->username)->plainTextToken,
                 'message' => 'Success'
             ], 200);
         }
@@ -37,4 +35,23 @@ class LoginController extends Controller
         ]);
     }
 
+    public function profile(Request $request){
+        $personalAccessToken = PersonalAccessToken::findToken($request->token);
+
+        if ($personalAccessToken) {
+            $user = $personalAccessToken->tokenable;
+
+            if ($user) {
+                return response()->json(new UserResource($user), 200);
+            } else {
+                return response()->json([
+                    'message' => 'Usuario no encontrado',
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Token no válido',
+            ], 401);
+        }
+    }
 }
