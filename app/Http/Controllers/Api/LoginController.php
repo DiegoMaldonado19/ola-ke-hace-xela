@@ -36,7 +36,7 @@ class LoginController extends Controller
     }
 
     public function profile(Request $request){
-        $personalAccessToken = PersonalAccessToken::findToken($request->token);
+        $personalAccessToken = PersonalAccessToken::findToken($request->bearerToken());
 
         if ($personalAccessToken) {
             $user = $personalAccessToken->tokenable;
