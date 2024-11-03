@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         $user = new User;
         $user->username = $request->username;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->role_id = $request->role_id;
         $user->email = $request->email;
         $user->cui = $request->cui;
