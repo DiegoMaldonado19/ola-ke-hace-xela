@@ -62,6 +62,22 @@ class NotificationController extends Controller
     }
 
     /**
+     * Get notifications by user ID
+     */
+    public function getNotificationsByUserId($userId): JsonResponse
+    {
+        $notifications = Notification::where('user_id', $userId)->get();
+
+        if ($notifications->isEmpty()) {
+            return response()->json([
+                "message" => "No se encontraron notificaciones para el usuario con ID $userId"
+            ], 404);
+        }
+
+        return response()->json(new NotificationCollection(($notifications), 200));
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id): JsonResponse
@@ -81,6 +97,31 @@ class NotificationController extends Controller
                 "message" => "Notificación no encontrada"
             ], 404);
         }
+    }
+
+    /**
+     * Mark all notifications not read, as read
+     */
+    public function markAllAsRead($userId): JsonResponse
+    {
+        
+        $notifications = Notification::where('user_id', $userId)
+                                    ->where('already_read', false)
+                                    ->get();
+
+        if ($notifications->isEmpty()) {
+            return response()->json([
+                "message" => "No se encontraron notificaciones no leídas para el usuario con ID $userId"
+            ], 404);
+        }
+
+        Notification::where('user_id', $userId)
+                    ->where('already_read', false)
+                    ->update(['already_read' => true]);
+
+        return response()->json([
+            "message" => "Todas las notificaciones no leídas han sido marcadas como leídas"
+        ], 200);
     }
 
     /**

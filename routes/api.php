@@ -48,8 +48,10 @@ Route::delete('v1/post-category/{id}', [PostCategoryV1::class, 'destroy'])->midd
 
 Route::get('v1/notification', [NotificationV1::class, 'index'])->middleware('auth:sanctum');
 Route::get('v1/notification/{id}', [NotificationV1::class, 'show'])->middleware('auth:sanctum');
+Route::get('v1/notification/byUserId/{id}', [NotificationV1::class, 'getNotificationsByUserId'])->middleware('auth:sanctum');
 Route::post('v1/notification', [NotificationV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/notification/{id}', [NotificationV1::class, 'update'])->middleware('auth:sanctum');
+Route::put('v1/notification/markAllAsRead/{id}', [NotificationV1::class, 'markAllAsRead'])->middleware('auth:sanctum');
 Route::delete('v1/notification/{id}', [NotificationV1::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::get('v1/attendance', [AttendanceV1::class, 'index'])->middleware('auth:sanctum');
