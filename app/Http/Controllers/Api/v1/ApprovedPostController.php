@@ -26,14 +26,20 @@ class ApprovedPostController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'post_id' => 'required|integer|exists:posts,id',
-            'approved_by' => 'required|integer|exists:users,id',
-        ]);
-
-        $approvedPost = ApprovedPost::create($validatedData);
-
-        return response()->json(new ApprovedPostResource($approvedPost), 201);
+        $approvedPost = new ApprovedPost;
+        $approvedPost->post_id = $request->post_id;
+        $approvedPost->approved_by = $request->approved_by;
+    
+        if ($approvedPost->save()) {
+            return response()->json([
+                'message' => 'Publicación aprobada creada con éxito',
+                'data' => new ApprovedPostResource($approvedPost)
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Error al crear la publicación aprobada'
+            ], 500);
+        }
     }
 
     /**

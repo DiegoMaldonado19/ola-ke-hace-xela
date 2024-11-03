@@ -26,15 +26,21 @@ class NotificationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'message' => 'required|string',
-            'already_read' => 'boolean',
-        ]);
-
-        $notification = Notification::create($validatedData);
-
-        return response()->json(new NotificationResource($notification), 201);
+        $notification = new Notification;
+        $notification->user_id = $request->user_id;
+        $notification->message = $request->message;
+        $notification->already_read = $request->already_read;
+    
+        if ($notification->save()) {
+            return response()->json([
+                'message' => 'Notificación creada con éxito',
+                'data' => new NotificationResource($notification)
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Error al crear la notificación'
+            ], 500);
+        }
     }
 
     /**

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PostCategory extends Model
 {
+
+    public $timestamps = false;
+
     protected $table = 'post_category';
 
     protected $fillable = [

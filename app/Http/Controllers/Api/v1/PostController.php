@@ -26,20 +26,26 @@ class PostController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'place' => 'required|string',
-            'start_date_time' => 'required|date',
-            'end_date_time' => 'required|date',
-            'capacity_limit' => 'required|integer',
-            'category_id' => 'required|integer|exists:post_categories,id',
-        ]);
-
-        $post = Post::create($validatedData);
-
-        return response()->json(new PostResource($post), 201);
+        $post = new Post;
+        $post->user_id = $request->user_id;
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->place = $request->place;
+        $post->start_date_time = $request->start_date_time;
+        $post->end_date_time = $request->end_date_time;
+        $post->capacity_limit = $request->capacity_limit;
+        $post->category_id = $request->category_id;
+    
+        if ($post->save()) {
+            return response()->json([
+                'message' => 'Publicación creada con éxito',
+                'data' => new PostResource($post)
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Error al crear la publicación'
+            ], 500);
+        }
     }
 
     /**
@@ -99,6 +105,24 @@ class PostController extends Controller
         } else {
             return response()->json([
                 "message" => "Publicación no encontrada"
+            ], 404);
+        }
+    }
+
+    public function increaseStrikeCount($id){
+        if(Post::where('id', $id)->exists()){
+            $post = Post::find($id);
+
+            $post->post_strike_count = $post->post_strike_count+1;
+
+            $post->save();
+
+            return response()->json([
+                "message" => "Strike incrementado con exito"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Publicación no encontrada se incremento sin exito"
             ], 404);
         }
     }

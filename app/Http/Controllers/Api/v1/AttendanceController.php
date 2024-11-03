@@ -27,16 +27,22 @@ class AttendanceController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse
-    {
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'post_id' => 'required|integer|exists:posts,id',
-        ]);
+{
+    $attendance = new Attendance;
+    $attendance->user_id = $request->user_id;
+    $attendance->post_id = $request->post_id;
 
-        $attendance = Attendance::create($validatedData);
-
-        return response()->json(new AttendanceResource($attendance), 201);
+    if ($attendance->save()) {
+        return response()->json([
+            'message' => 'Asistencia creada con éxito',
+            'data' => new AttendanceCollection($attendance)
+        ], 201);
+    } else {
+        return response()->json([
+            'message' => 'Error al crear la asistencia'
+        ], 500);
     }
+}
 
     /**
      * Display the specified resource.

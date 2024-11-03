@@ -27,20 +27,26 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'username' => 'required|string|max:50|unique:users',
-            'password' => 'required|string|max:255',
-            'role_id' => 'required|integer|exists:user_roles,id',
-            'email' => 'required|string|max:100|unique:users',
-            'cui' => 'required|string|max:13|unique:users',
-            'name' => 'required|string|max:50',
-            'lastname' => 'required|string|max:50',
-            'phone' => 'required|string|max:15',
-        ]);
-
-        $user = User::create($validatedData);
-
-        return response()->json(new UserResource($user), 201);
+        $user = new User;
+        $user->username = $request->username;
+        $user->password = $request->password;
+        $user->role_id = $request->role_id;
+        $user->email = $request->email;
+        $user->cui = $request->cui;
+        $user->name = $request->name;
+        $user->lastname = $request->lastname;
+        $user->phone = $request->phone;
+    
+        if ($user->save()) {
+            return response()->json([
+                'message' => 'Usuario creado con éxito',
+                'data' => new UserResource($user)
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Error al crear el usuario'
+            ], 500);
+        }
     }
 
     /**

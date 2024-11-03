@@ -25,13 +25,21 @@ class PostCategoryController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:50',
-        ]);
+       
+        $postCategory = new PostCategory;
 
-        $postCategory = PostCategory::create($validatedData);
+        $postCategory->name = $request->name;
 
-        return response()->json(new PostCategoryResource($postCategory), 201);
+        if ($post->save()) {
+            return response()->json([
+                'message' => 'Publicación creada con éxito',
+                'data' => new PostCategoryResource($postCategory)
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Error al crear la categoria'
+            ], 500);
+        }
     }
 
     /**

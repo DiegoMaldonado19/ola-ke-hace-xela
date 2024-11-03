@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendance extends Pivot
 {
+
+    public $timestamps = false;
+
     protected $table = 'attendance';
 
     protected $fillable = [

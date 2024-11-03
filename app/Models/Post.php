@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'post';
 
     protected $fillable = [
         'user_id',
-        'tittle',
+        'title',
         'place',
         'description',
         'start_date_time',

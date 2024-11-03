@@ -25,17 +25,23 @@ class ReportController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse
-    {
-        $validatedData = $request->validate([
-            'post_id' => 'required|integer|exists:posts,id',
-            'user_id' => 'required|integer|exists:users,id',
-            'comment' => 'required|string',
-        ]);
+{
+    $report = new Report;
+    $report->post_id = $request->post_id;
+    $report->user_id = $request->user_id;
+    $report->comment = $request->comment;
 
-        $report = Report::create($validatedData);
-
-        return response()->json(new ReportResource($report), 201);
+    if ($report->save()) {
+        return response()->json([
+            'message' => 'Reporte creado con éxito',
+            'data' => new ReportResource($report)
+        ], 201);
+    } else {
+        return response()->json([
+            'message' => 'Error al crear el reporte'
+        ], 500);
     }
+}
 
     /**
      * Display the specified resource.

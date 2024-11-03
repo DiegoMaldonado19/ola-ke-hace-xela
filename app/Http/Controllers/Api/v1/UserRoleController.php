@@ -25,13 +25,19 @@ class UserRoleController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:50',
-        ]);
-
-        $userRole = UserRole::create($validatedData);
-
-        return response()->json(new UserResource($userRole), 201);
+        $userRole = new UserRole;
+        $userRole->name = $request->name;
+    
+        if ($userRole->save()) {
+            return response()->json([
+                'message' => 'Rol de usuario creado con éxito',
+                'data' => new UserResource($userRole)
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Error al crear el rol de usuario'
+            ], 500);
+        }
     }
 
     /**

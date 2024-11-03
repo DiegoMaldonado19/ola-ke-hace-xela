@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ApprovedPost extends Pivot
 {
+
+    public $timestamps = false;
+
     protected $table = 'approved_post';
 
     protected $fillable = [

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Report extends Model
 {
+
+    public $timestamps = false;
+
     protected $table = 'report';
 
     protected $fillable = [
