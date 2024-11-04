@@ -1,6 +1,7 @@
 ## ola-ke-hace-xela Backend
 
-This project is a REST API created with Laravel, that help us to interact with a MariaDB Database environment running in Xampp.
+This project is a REST API created with Laravel, that helps us to interact with a MariaDB Database environment running in Xampp.
+This API REST, helps us to manage all the logic of a Server Side Event Publishing Application.
 
 --------------------------------------------------------
 
@@ -109,6 +110,8 @@ This project is a REST API created with Laravel, that help us to interact with a
 ## Ports
 
 * #### This REST API runs locally in port 8000.
+* #### You can run the Application by running this command in your console:
+  * php artisan serve
 
 ------------------------------------------------
 
