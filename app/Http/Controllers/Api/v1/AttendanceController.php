@@ -35,7 +35,7 @@ class AttendanceController extends Controller
     if ($attendance->save()) {
         return response()->json([
             'message' => 'Asistencia creada con éxito',
-            'data' => new AttendanceCollection($attendance)
+            'data' => new AttendanceResource($attendance)
         ], 201);
     } else {
         return response()->json([
