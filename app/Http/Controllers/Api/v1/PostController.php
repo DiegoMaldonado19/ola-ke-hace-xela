@@ -145,6 +145,24 @@ class PostController extends Controller
         }
     }
 
+    public function disapprovePost($id){
+        if(Post::where('id', $id)->exists()){
+            $post = Post::find($id);
+
+            $post->approved = false;
+
+            $post->save();
+
+            return response()->json([
+                "message" => "Publicación aprobado con exito"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Publicación no encontrada se incremento sin exito"
+            ], 404);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */

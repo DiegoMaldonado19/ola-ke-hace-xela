@@ -27,6 +27,7 @@ Route::post('v1/post', [PostV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/post/{id}', [PostV1::class, 'update'])->middleware('auth:sanctum');
 Route::put('v1/post/increase-strike/{id}', [PostV1::class, 'increaseStrikeCount'])->middleware('auth:sanctum');
 Route::put('v1/post/approve-post/{id}', [PostV1::class, 'approvePost'])->middleware('auth:sanctum');
+Route::put('v1/post/disapprove-post/{id}', [PostV1::class, 'disapprovePost'])->middleware('auth:sanctum');
 Route::delete('v1/post/{id}', [PostV1::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::get('v1/role', [UserRoleV1::class, 'index'])->middleware('auth:sanctum');
