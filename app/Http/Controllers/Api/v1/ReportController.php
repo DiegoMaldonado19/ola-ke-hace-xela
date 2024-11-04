@@ -22,6 +22,22 @@ class ReportController extends Controller
     }
 
     /**
+     * Display a listing of the resource based on post_id.
+    */
+    public function getReportsByPostId($post_id): JsonResponse
+    {
+        $reports = Report::where('post_id', $post_id)->get();
+
+        if ($reports->isEmpty()) {
+            return response()->json([
+                "message" => "No se encontraron reportes para este post"
+            ], 404);
+        }
+
+        return response()->json(new ReportCollection($reports), 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse

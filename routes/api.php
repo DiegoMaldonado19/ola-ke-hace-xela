@@ -26,6 +26,7 @@ Route::get('v1/post-notApproved', [PostV1::class, 'notApprovedPosts'])->middlewa
 Route::post('v1/post', [PostV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/post/{id}', [PostV1::class, 'update'])->middleware('auth:sanctum');
 Route::put('v1/post/increase-strike/{id}', [PostV1::class, 'increaseStrikeCount'])->middleware('auth:sanctum');
+Route::put('v1/post/approve-post/{id}', [PostV1::class, 'approvePost'])->middleware('auth:sanctum');
 Route::delete('v1/post/{id}', [PostV1::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::get('v1/role', [UserRoleV1::class, 'index'])->middleware('auth:sanctum');
@@ -36,6 +37,7 @@ Route::delete('v1/role/{id}', [UserRoleV1::class, 'destroy'])->middleware('auth:
 
 Route::get('v1/report', [ReportV1::class, 'index'])->middleware('auth:sanctum');
 Route::get('v1/report/{id}', [ReportV1::class, 'show'])->middleware('auth:sanctum');
+Route::get('v1/report/post/{post_id}', [ReportV1::class, 'getReportsByPostId'])->middleware('auth:sanctum');
 Route::post('v1/report', [ReportV1::class, 'store'])->middleware('auth:sanctum');
 Route::put('v1/report/{id}', [ReportV1::class, 'update'])->middleware('auth:sanctum');
 Route::delete('v1/report/{id}', [ReportV1::class, 'destroy'])->middleware('auth:sanctum');
